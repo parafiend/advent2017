@@ -1,7 +1,17 @@
 package base
 
-type puzzle interface {
-	test() string
-	phase1() string
-	phase2() string
+var Puzzles = make(map[string]Puzzle)
+
+type Puzzle interface {
+	Test() string
+	Phase1() string
+	Phase2() string
+}
+
+func Register(id string, logic Puzzle) {
+	Puzzles[id] = logic
+}
+
+func Get(id string) Puzzle {
+	return Puzzles[id]
 }
