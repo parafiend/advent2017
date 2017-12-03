@@ -1,8 +1,9 @@
-package puzzle01
+package puzzle02
 
 import (
 	"log"
 	"strconv"
+	"strings"
 
 	"github.com/parafiend/advent2017/base"
 )
@@ -12,16 +13,14 @@ const id = "2"
 type Puzzle struct{}
 
 func (p Puzzle) Test() string {
-	test := []string{
-		"5 1 9 5",
-		"7 5 3",
-		"2 4 6 8",
-	}
+	test := `5 1 9 5
+		7 5 3
+		2 4 6 8`
 	return strconv.Itoa(checksum(test))
 }
 
 func (p Puzzle) Phase1() string {
-	return "doin phase1"
+	return strconv.Itoa(checksum(Spreadsheet))
 }
 
 func (p Puzzle) Phase2() string {
@@ -32,16 +31,25 @@ func (p Puzzle) String() string {
 	return "puzz" + id
 }
 
-func checksum(input []string) int {
+func toCells(input string) [][]string {
+	rows := strings.Split(input, "\n")
+	var cells [][]string
+	for _, v := range rows {
+		row := strings.Fields(v)
+		cells = append(cells, row)
+		log.Println(cells)
+	}
+	return cells
+}
+
+func checksum(input string) int {
+	sheet := toCells(input)
 	var result int
-	for _, v := range input {
+	for _, cells := range sheet {
 		minVal := int(^uint(0) >> 1)
 		maxVal := 0
-		for j := 0; j < len(v); j++ {
-			if v[j] == " "[0] {
-				continue
-			}
-			curr := btoi(v[j])
+		for _, cell := range cells {
+			curr, _ := strconv.Atoi(cell)
 			minVal = min(minVal, curr)
 			maxVal = max(maxVal, curr)
 		}
