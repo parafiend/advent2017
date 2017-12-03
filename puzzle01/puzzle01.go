@@ -12,34 +12,46 @@ const phase1Input = "18144568296689784866596347266193986531397687719431268499352
 type Puzzle struct{}
 
 func (p Puzzle) Test() string {
-	log.Println(captcha("1122"))
-	log.Println(captcha("1111"))
-	log.Println(captcha("1234"))
-	log.Println(captcha("91212129"))
+	log.Println(captcha("1122", 1))
+	log.Println(captcha("1111", 1))
+	log.Println(captcha("1234", 1))
+	log.Println(captcha("91212129", 1))
+
+	log.Println(halfwayCaptcha("1212"))
+	log.Println(halfwayCaptcha("1221"))
+	log.Println(halfwayCaptcha("123425"))
+	log.Println(halfwayCaptcha("123123"))
+	log.Println(halfwayCaptcha("12131415"))
 	return "did a thing"
 }
 
 func (p Puzzle) Phase1() string {
-	return strconv.Itoa(captcha(phase1Input))
+	return strconv.Itoa(captcha(phase1Input, 1))
 }
 
 func (p Puzzle) Phase2() string {
-	return "doin phase2"
+	return strconv.Itoa(halfwayCaptcha(phase1Input))
 }
 
 func (p Puzzle) String() string {
 	return "puzz1"
 }
 
-func captcha(input string) int {
+func halfwayCaptcha(input string) int {
+	offset := len(input) / 2
+	return captcha(input, offset)
+}
+
+func captcha(input string, offset int) int {
 	var sum int
 	for index := 0; index < len(input); index++ {
 		digit := input[index]
 		var next byte
-		if index == len(input)-1 {
-			next = input[0]
+		nextIndex := index + offset
+		if nextIndex >= len(input) {
+			next = input[nextIndex-len(input)]
 		} else {
-			next = input[index+1]
+			next = input[nextIndex]
 		}
 		if digit == next {
 			value := digit - "0"[0]
