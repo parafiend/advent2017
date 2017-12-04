@@ -2,6 +2,7 @@ package puzzle01
 
 import (
 	"log"
+	"strconv"
 
 	"github.com/parafiend/advent2017/base"
 )
@@ -26,7 +27,7 @@ func (p Puzzle) Test() string {
 }
 
 func (p Puzzle) Phase1() string {
-	return "doin phase1"
+	return strconv.Itoa(distance(cartesianize(312051)))
 }
 
 func (p Puzzle) Phase2() string {
