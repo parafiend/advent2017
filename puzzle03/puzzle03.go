@@ -17,6 +17,11 @@ func (p Puzzle) Test() string {
 	log.Println(cartesianize(11))
 	log.Println(cartesianize(25))
 	log.Println(cartesianize(26))
+
+	log.Println(distance(cartesianize(1)))
+	log.Println(distance(cartesianize(12)))
+	log.Println(distance(cartesianize(23)))
+	log.Println(distance(cartesianize(1024)))
 	return "doin a test"
 }
 
@@ -26,6 +31,17 @@ func (p Puzzle) Phase1() string {
 
 func (p Puzzle) Phase2() string {
 	return "doin phase2"
+}
+
+func distance(x int, y int) int {
+	return abs(x) + abs(y)
+}
+
+func abs(a int) int {
+	if a < 0 {
+		return -1 * a
+	}
+	return a
 }
 
 func cartesianize(cell int) (int, int) {
