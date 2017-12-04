@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/parafiend/advent2017/base"
+	"github.com/parafiend/advent2017/utils"
 )
 
 const id = "3"
@@ -40,14 +41,7 @@ func (p Puzzle) Phase2() string {
 }
 
 func distance(x int, y int) int {
-	return abs(x) + abs(y)
-}
-
-func abs(a int) int {
-	if a < 0 {
-		return -1 * a
-	}
-	return a
+	return utils.Abs(x) + utils.Abs(y)
 }
 
 func cartesianize(cell int) (int, int) {
@@ -109,17 +103,10 @@ func findSumAbove(input int) int {
 				sum += cells[targetX][targetY]
 			}
 		}
-		maxVal = max(sum, maxVal)
+		maxVal = utils.Max(sum, maxVal)
 		cells[x+center][y+center] = sum
 	}
 	return maxVal
-}
-
-func max(a int, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func ringMax(ring int) int {

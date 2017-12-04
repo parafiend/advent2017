@@ -1,4 +1,4 @@
-package puzzle01
+package utils
 
 import "github.com/parafiend/advent2017/base"
 

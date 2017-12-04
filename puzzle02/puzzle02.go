@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/parafiend/advent2017/base"
+	"github.com/parafiend/advent2017/utils"
 )
 
 const id = "2"
@@ -56,8 +57,8 @@ func checksum(input string) int {
 		maxVal := 0
 		for _, cell := range cells {
 			curr, _ := strconv.Atoi(cell)
-			minVal = min(minVal, curr)
-			maxVal = max(maxVal, curr)
+			minVal = utils.Min(minVal, curr)
+			maxVal = utils.Max(maxVal, curr)
 		}
 		diff := maxVal - minVal
 		log.Println(minVal, maxVal, diff)
@@ -79,7 +80,7 @@ func checksum2(input string) int {
 				candidate, _ := strconv.Atoi(cells[j])
 
 				if curr%candidate == 0 || candidate%curr == 0 {
-					big, little = max(curr, candidate), min(curr, candidate)
+					big, little = utils.Max(curr, candidate), utils.Min(curr, candidate)
 					found = true
 					break
 				}
@@ -93,24 +94,6 @@ func checksum2(input string) int {
 		}
 	}
 	return result
-}
-
-func btoi(a byte) int {
-	return int(a - "0"[0])
-}
-
-func min(a int, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-func max(a int, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
 
 func init() {
