@@ -23,6 +23,11 @@ func (p Puzzle) Test() string {
 	log.Println(distance(cartesianize(12)))
 	log.Println(distance(cartesianize(23)))
 	log.Println(distance(cartesianize(1024)))
+
+	log.Println(findSumAbove(1))
+	log.Println(findSumAbove(4))
+	log.Println(findSumAbove(800))
+
 	return "doin a test"
 }
 
@@ -31,7 +36,7 @@ func (p Puzzle) Phase1() string {
 }
 
 func (p Puzzle) Phase2() string {
-	return "doin phase2"
+	return strconv.Itoa(findSumAbove(312051))
 }
 
 func distance(x int, y int) int {
@@ -77,8 +82,44 @@ func cartesianize(cell int) (int, int) {
 			baseX++
 		}
 	}
-	log.Println(baseX, baseY, cell)
+	//log.Println(baseX, baseY, cell)
 	return baseX, baseY
+}
+
+func findSumAbove(input int) int {
+	var maxVal int
+	const cellCount = 50
+	cells := make([][]int, cellCount)
+	for i := 0; i < len(cells); i++ {
+		cells[i] = make([]int, cellCount)
+	}
+	center := cellCount / 2
+	cells[center][center] = 1
+
+	for i := 2; maxVal < input; i++ {
+		x, y := cartesianize(i)
+		var sum int
+		for j := -1; j <= 1; j++ {
+			for k := -1; k <= 1; k++ {
+				if j == 0 && k == 0 {
+					continue
+				}
+				targetX := x + j + center
+				targetY := y + k + center
+				sum += cells[targetX][targetY]
+			}
+		}
+		maxVal = max(sum, maxVal)
+		cells[x+center][y+center] = sum
+	}
+	return maxVal
+}
+
+func max(a int, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }
 
 func ringMax(ring int) int {
