@@ -31,7 +31,13 @@ func (p Puzzle) Phase1() string {
 }
 
 func (p Puzzle) Phase2() string {
-	return "doin phase2"
+	var sumValid int
+	for _, v := range strings.Split(Phrases, "\n") {
+		if isPhraseValid2(v) {
+			sumValid++
+		}
+	}
+	return strconv.Itoa(sumValid)
 }
 
 func (p Puzzle) String() string {
@@ -40,6 +46,44 @@ func (p Puzzle) String() string {
 
 func isPhraseValid(phrase string) bool {
 	phrases := strings.Fields(phrase)
+	sort.Strings(phrases)
+	valid := true
+	for i, v := range phrases {
+		if i < len(phrases)-1 && phrases[i+1] == v {
+			valid = false
+			break
+		}
+	}
+	return valid
+}
+
+type sortRunes []rune
+
+func (s sortRunes) Less(i, j int) bool {
+	return s[i] < s[j]
+}
+
+func (s sortRunes) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+
+func (s sortRunes) Len() int {
+	return len(s)
+}
+
+func sortString(input string) string {
+	runes := []rune(input)
+	sort.Sort(sortRunes(runes))
+	return string(runes)
+}
+
+func isPhraseValid2(phrase string) bool {
+	phrases := strings.Fields(phrase)
+	for i, v := range phrases {
+		x := sortString(v)
+		phrases[i] = x
+	}
+	log.Println(phrases)
 	sort.Strings(phrases)
 	valid := true
 	for i, v := range phrases {
