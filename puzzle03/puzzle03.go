@@ -1,4 +1,4 @@
-package puzzle01
+package puzzle03
 
 import (
 	"log"
