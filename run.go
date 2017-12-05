@@ -11,6 +11,7 @@ import (
 import _ "github.com/parafiend/advent2017/puzzle01"
 import _ "github.com/parafiend/advent2017/puzzle02"
 import _ "github.com/parafiend/advent2017/puzzle03"
+import _ "github.com/parafiend/advent2017/puzzle04"
 
 func main() {
 	puzzle := flag.Int("puzzle", 0, "Puzzle ID to run")
