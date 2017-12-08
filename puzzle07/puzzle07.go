@@ -27,6 +27,7 @@ func (p Puzzle) Test() string {
 	gyxo (61)
 	cntj (57)`
 	stack := makeStack(testInput)
+	log.Println(stack.Root.FindUnbalance())
 	return stack.Root.Name
 }
 
@@ -36,6 +37,8 @@ func (p Puzzle) Phase1() string {
 }
 
 func (p Puzzle) Phase2() string {
+	stack := makeStack(Programs)
+	log.Println(stack.Root.FindUnbalance())
 	return "doin phase2"
 }
 
@@ -57,7 +60,7 @@ func makeStack(input string) *Stack {
 func parseElement(line string) (string, int, []string) {
 	chunks := strings.Fields(line)
 	name := chunks[0]
-	weight, _ := strconv.Atoi(chunks[1])
+	weight, _ := parseWeight(chunks[1])
 	children := make([]string, 0)
 	if len(chunks) > 2 {
 		for _, rawChild := range chunks[3:] {
@@ -65,6 +68,12 @@ func parseElement(line string) (string, int, []string) {
 		}
 	}
 	return name, weight, children
+}
+
+func parseWeight(input string) (int, error) {
+	input = strings.Replace(input, "(", "", -1)
+	input = strings.Replace(input, ")", "", -1)
+	return strconv.Atoi(input)
 }
 
 func init() {
