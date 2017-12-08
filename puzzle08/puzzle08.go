@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/parafiend/advent2017/base"
+	"github.com/parafiend/advent2017/utils"
 )
 
 const id = "8"
@@ -17,33 +18,40 @@ func (p Puzzle) Test() string {
 	a inc 1 if b < 5
 	c dec -10 if a >= 1
 	c inc -20 if c == 10`
-	registers := process(input)
+	registers, largestSeen := process(input)
+	log.Println(largestSeen)
 	return strconv.Itoa(registers[getMaxRegister(&registers)])
 }
 
 func (p Puzzle) Phase1() string {
-	registers := process(instructions)
+	registers, _ := process(instructions)
 	return strconv.Itoa(registers[getMaxRegister(&registers)])
 }
 
 func (p Puzzle) Phase2() string {
-	return "doin phase2"
+	_, largestSeen := process(instructions)
+	return strconv.Itoa(largestSeen)
 }
 
 func (p Puzzle) String() string {
 	return "puzz" + id
 }
 
-func process(input string) map[string]int {
+func process(input string) (map[string]int, int) {
 	registers := make(map[string]int)
 	lines := strings.Split(input, "\n")
+	largestSeen := utils.MyMinInt
 	for _, line := range lines {
 		bits := strings.Fields(line)
 		if evaluate(&registers, bits[4:]) {
 			update(&registers, bits[:3])
 		}
+		var currMax int
+		if currMax = registers[getMaxRegister(&registers)]; currMax > largestSeen {
+			largestSeen = currMax
+		}
 	}
-	return registers
+	return registers, largestSeen
 }
 
 func evaluate(registry *map[string]int, parts []string) bool {
@@ -96,7 +104,7 @@ func getOrCreateRegister(registry *map[string]int, name string) int {
 
 func getMaxRegister(registers *map[string]int) string {
 	var result string
-	max := -int(^uint(0)>>1) - 1
+	max := utils.MyMinInt
 	log.Println(max, registers)
 	for k, v := range *registers {
 		if v > max {
