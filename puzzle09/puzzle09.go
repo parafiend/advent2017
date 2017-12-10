@@ -22,30 +22,36 @@ func MakeParser() StreamParser {
 type Puzzle struct{}
 
 func (p Puzzle) Test() string {
-	log.Println("----", ScoreGroups("{{{},{},{{}}}}"))
-	log.Println("----", ScoreGroups("{{<ab>},{<ab>},{<ab>},{<ab>}}"))
-	log.Println("----", ScoreGroups("{{<a!>},{<a!>},{<a!>},{<ab>}}"))
-	log.Println("----", ScoreGroups("{{<!!>},{<!!>},{<!!>},{<!!>}}"))
-	log.Println("----", ScoreGroups("<{o\"i!a,<{i<a>"))
-	log.Println("----", ScoreGroups("<<<<>"))
+	testStrings := [6]string{"{{{},{},{{}}}}",
+		"{{<ab>},{<ab>},{<ab>},{<ab>}}",
+		"{{<a!>},{<a!>},{<a!>},{<ab>}}",
+		"{{<!!>},{<!!>},{<!!>},{<!!>}}",
+		"<{o\"i!a,<{i<a>",
+		"<<<<>"}
+	for _, test := range testStrings {
+		score, garbage := ScoreGroups(test)
+		log.Println("----", score, garbage)
+	}
 	return "doin a test"
 }
 
 func (p Puzzle) Phase1() string {
-	return strconv.Itoa(ScoreGroups(input))
+	score, garbage := ScoreGroups(input)
+	return strconv.Itoa(score) + ", " + strconv.Itoa(garbage)
 }
 
 func (p Puzzle) Phase2() string {
-	return "doin phase2"
+	return "See phase1"
 }
 
 func (p Puzzle) String() string {
 	return "puzz" + id
 }
 
-func ScoreGroups(stream string) int {
+func ScoreGroups(stream string) (int, int) {
 	p := MakeParser()
 	score := 0
+	garbage := 0
 	for i, char := range stream {
 		if p.InGarbage {
 			switch {
@@ -55,6 +61,8 @@ func ScoreGroups(stream string) int {
 				p.NextCancelled = true
 			case char == '>':
 				p.InGarbage = false
+			default:
+				garbage++
 			}
 		} else {
 			switch char {
@@ -69,7 +77,7 @@ func ScoreGroups(stream string) int {
 			}
 		}
 	}
-	return score
+	return score, garbage
 }
 
 func init() {
